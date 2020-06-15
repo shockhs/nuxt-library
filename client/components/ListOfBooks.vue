@@ -1,0 +1,65 @@
+<template>
+  <div class="books-elements">
+    <client-only placeholder="Loading...">
+      <input type="text" v-model="searchValue" class="searchInput" placeholder="Search title..."/>
+      <Book :key="book.isbn" v-for="book in getBooks" :book="book" />
+    </client-only>
+  </div>
+</template>
+
+
+
+<script>
+import Book from "./Book";
+import { mapGetters } from "vuex";
+export default {
+  name: "ListOfBooks",
+  components: {
+    Book: Book
+  },
+  computed: {
+    getBooks: function(value) {
+      return this.$store.getters["books/getBooks"].filter(item => {
+        if (item.title.toLowerCase().indexOf(this.searchValue) === 0) {
+          return true;
+        }
+      });
+    }
+  },
+  data() {
+    return {
+      searchValue: "",
+      books: this.$store.getters["books/getBooks"]
+    };
+  },
+  async created() {
+    this.$axios.get("http://127.0.0.1:5000/api/books/").then(res => {
+      if (res.status === 200) {
+        this.$store.commit("books/setInitialBooks", res.data);
+      }
+    });
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.books-elements {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  .book-item + .book-item {
+    margin-top: 10px;
+  }
+  .searchInput {
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid #0bcf5d;
+    padding: 15px 0 15px 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+}
+</style>
