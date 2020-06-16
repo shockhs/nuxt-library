@@ -34,6 +34,7 @@ body {
 
 img,
 a,
+button,
 ul,
 li,
 ol {
@@ -54,6 +55,10 @@ a {
 .container {
   width: 1240px;
   margin: 0 auto;
+}
+.center {
+  display: flex;
+  justify-content: center;
 }
 
 a,

@@ -12,8 +12,8 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/isbn=?:isbn', async (req, res) => {
-    const bookExist = await Book.findOne({ isbn: req.params.isbn })
+router.get('/id=?:id', async (req, res) => {
+    const bookExist = await Book.findOne({ _id: req.params.id })
     if (!bookExist) return res.status(400).send({ error: `Book doesn't exist`, resultCode: 10 });
 
     try {

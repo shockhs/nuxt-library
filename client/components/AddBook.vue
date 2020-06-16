@@ -3,14 +3,14 @@
     <div class="inputs">
       <label for="isbn">ISBN (13 characters):</label>
       <input required v-model="isbn" type="text" name="isbn" maxlength="13" minlength="10" />
-      <label for="isbn">Title:</label>
+      <label for="title">Title:</label>
       <input required v-model="title" type="text" name="title" />
-      <label for="isbn">Author:</label>
+      <label for="author">Author:</label>
       <input required v-model="author" type="text" name="author" />
-      <label for="isbn">NumberOfCopies:</label>
+      <label for="numberOfCopies">NumberOfCopies:</label>
       <input required v-model="numberOfCopies" type="number" name="numberOfCopies" />
-      <label for="isbn">Image URL:</label>
-      <input required v-model="imageUrl" type="text" name="imagurl" />
+      <label for="imageUrl">Image URL:</label>
+      <input required v-model="imageUrl" type="text" name="imageUrl" />
     </div>
     <div class="buttons">
       <button type="submit" @click.prevent="addBook">Add Book</button>
@@ -48,13 +48,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.$store.commit("books/addBook", res.data);
-            this.book = {
-              isbn: "",
-              title: "",
-              author: "",
-              imageUrl: "",
-              numberOfCopies: ""
-            };
+            this.$router.push("/books");
           }
         });
     }

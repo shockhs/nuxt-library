@@ -1,7 +1,7 @@
 <template>
   <div class="book-item">
     <div class="book-item__image">
-      <a :href="/books/+book.isbn">
+      <a :href="/books/+book._id">
         <img :src="book.imageUrl" :alt="book.title" />
       </a>
     </div>
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     viewClick() {
-      this.$router.push(`/books/${this.book.isbn}`);
+      this.$router.push(`/books/${this.book._id}`);
     }
   }
 };

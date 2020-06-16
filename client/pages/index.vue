@@ -1,18 +1,15 @@
 <template>
   <section id="allBooks">
-    <CreateForm />
     <ListOfBooks />
   </section>
 </template>
 
 <script>
-import AddBook from "../components/AddBook";
 import ListOfBooks from "../components/ListOfBooks";
 
 export default {
   name: "Homepage",
   components: {
-    CreateForm: AddBook,
     ListOfBooks: ListOfBooks
   },
   beforeMount() {

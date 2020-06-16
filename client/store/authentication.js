@@ -8,7 +8,8 @@ export const state = () => ({
 export const getters = {
     user: state => state.user,
     status: state => state.status,
-    getToken: state => state.authToken
+    getToken: state => state.authToken,
+    getUsername: state => state.user.username
 }
 
 

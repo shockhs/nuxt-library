@@ -1,7 +1,10 @@
 <template>
   <div class="books-elements">
     <client-only placeholder="Loading...">
-      <input type="text" v-model="searchValue" class="searchInput" placeholder="Search title..."/>
+      <div class="searchField">
+        <input type="text" v-model="searchValue" class="searchInput" placeholder="Search title..." />
+        <nuxt-link to="/books/add" class="addBook">Add Book</nuxt-link>
+      </div>
       <Book :key="book.isbn" v-for="book in getBooks" :book="book" />
     </client-only>
   </div>
@@ -43,6 +46,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.searchField {
+  display: grid;
+  grid-template-columns: 85% 15%;
+  height: 100%;
+  .addBook {
+    background-color: yellowgreen;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    padding: 15px 0;
+    color:#fff;
+    font-weight: 500;
+    border-radius: 10px;
+    text-align: center;
+    align-self: center;
+  }
+}
 .books-elements {
   margin-top: 40px;
   padding: 20px 0;

@@ -10,12 +10,14 @@ const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 const authRoute = require('./routes/auth')
 const booksRoute = require('./routes/books')
+const loansRoute = require('./routes/loans')
+const { fail } = require('assert')
 
 dotenv.config();
 
 mongoose.connect(
     process.env.DB_CONNECT,
-    { useUnifiedTopology: true, useNewUrlParser: true },
+    { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify:false },
     () => {
         console.log('Connected to DB')
     });
@@ -30,6 +32,7 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 // Route Middleware
 app.use('/api/user', authRoute)
 app.use('/api/books', booksRoute)
+app.use('/api/loans', loansRoute)
 
 
 server.listen(PORT, () => {
