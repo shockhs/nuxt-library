@@ -1,9 +1,15 @@
 <template>
-  <div>
-    <form @submit.prevent="onSubmit">
-      <input v-model="email" type="text" />
-      <input v-model="password" type="password" />
-      <button type="submit">Login</button>
+  <div class="authorization">
+    <form class="authForm" @submit.prevent="onSubmit">
+      <div class="inputForm">
+        <label for="email" name="email">Email:</label>
+        <input v-model="email" type="text" />
+      </div>
+      <div class="inputForm">
+        <label for="password" name="password">Password:</label>
+        <input v-model="password" type="password" />
+      </div>
+      <button class="buttonForm" type="submit">Login</button>
     </form>
   </div>
 </template>
@@ -39,3 +45,43 @@ export default {
   }
 };
 </script>
+
+
+<style lang="scss">
+.authorization {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.authForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.inputForm {
+  width: 400px;
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  label {
+    font-weight: 500;
+  }
+  input{
+    font-size: 16px;
+  }
+}
+.buttonForm{
+  width: 150px;
+  margin-top: 10px;
+  padding: 5px 0;
+  border: none;
+  background-color: #0bcf5d;
+  color:#fff;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 5px;
+}
+</style>

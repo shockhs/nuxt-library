@@ -6,7 +6,7 @@ const isActiveUser = require('./middleware/isActiveUser')
 
 router.get('/book=?:book', async (req, res) => {
     const loansExist = await Loan.find({ book: req.params.book })
-    if (!loansExist) return res.status(400).send({ error: `Loans don't exist`, resultCode: 10 });
+    if (!loansExist) return res.status(404).send({ error: `Loans don't exist`, resultCode: 10 });
 
     for (let i = 0; i < loansExist.length; i++) {
         if (new Date(loansExist[i].dueDate) < Date.now()) {
@@ -16,7 +16,8 @@ router.get('/book=?:book', async (req, res) => {
                     { $set: { status: 'overdue' } },
                     { new: true, overwrite: true },
                     function (err) {
-                        console.log(err);
+                        if (err)
+                            console.log(err);
                     })
             }
         }
@@ -31,7 +32,7 @@ router.get('/book=?:book', async (req, res) => {
 
 router.get('/', isActiveUser, async (req, res) => {
     const loansExist = await Loan.find({ member: req.currentUser._id })
-    if (!loansExist) return res.status(400).send({ error: `Loans don't exist`, resultCode: 10 });
+    if (!loansExist) return res.status(404).send({ error: `Loans don't exist`, resultCode: 10 });
     for (let i = 0; i < loansExist.length; i++) {
         if (new Date(loansExist[i].dueDate) < Date.now()) {
             if (loansExist[i].status !== 'overdue') {
@@ -39,8 +40,9 @@ router.get('/', isActiveUser, async (req, res) => {
                     { _id: loansExist[i]._id },
                     { $set: { status: 'overdue' } },
                     { new: true, overwrite: true },
-                    function (err) {
-                        console.log(err);
+                    function (err, result) {
+                        if (!err)
+                            loansExist[i] = result
                     })
             }
         }
@@ -61,13 +63,14 @@ router.post('/close', isActiveUser, async (req, res) => {
             { $set: { returnDate: returnDate, status: 'closed' } },
             { new: true, overwrite: true }, function (error, result) {
                 if (!error) {
-                    res.status(200).send({ message: 'Loan is closed', status: 2000 })
+                    res.send({ message: 'Loan is closed', status: 200 })
                     Book.findOneAndUpdate(
                         { _id: result.book },
                         { $inc: { stock: -1 } },
                         { new: true, overwrite: true },
                         function (err) {
-                            console.log(err);
+                            if (err)
+                                console.log(err);
                         })
                 }
             })
@@ -80,7 +83,7 @@ router.post('/close', isActiveUser, async (req, res) => {
 router.delete('/loanId=?:loanId', isActiveUser, async (req, res) => {
     let loanId = req.params.loanId
     const loanExist = await Loan.findOne({ _id: loanId, member: req.currentUser._id })
-    if (!loanExist) return res.status(400).send({ error: `Loan doesn't exist`, resultCode: 10 });
+    if (!loanExist) return res.status(404).send({ error: `Loan doesn't exist`, resultCode: 10 });
 
     try {
         await loanExist.remove();
@@ -106,7 +109,8 @@ router.post('/create', isActiveUser, async (req, res) => {
             { $inc: { stock: 1 } },
             { new: true, overwrite: true },
             function (err) {
-                console.log(err);
+                if (err)
+                    console.log(err);
             })
         const loan = new Loan({
             book: book,
@@ -124,7 +128,7 @@ router.post('/create', isActiveUser, async (req, res) => {
             res.status(400).send(err);
         }
     } else {
-        res.status(401).send({ message: 'No free copies in base' });
+        res.status(400).send({ message: 'No free copies in base' });
     }
 
 })

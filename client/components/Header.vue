@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <nuxt-link exact active-class="active" to="/">
-      <div class="header__logotype">library-nuxt</div>
+      <div class="header__logotype"><h2>library-nuxt</h2></div>
     </nuxt-link>
     <ul class="header__navigation">
       <li :key="'nav1'">

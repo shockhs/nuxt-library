@@ -5,6 +5,31 @@ const isActiveUser = require('./middleware/isActiveUser')
 
 router.get('/', async (req, res) => {
     const listOfBooks = await Book.find()
+    for (let i = 0; i < listOfBooks.length; i++) {
+        if (listOfBooks[i].stock === listOfBooks[i].numberOfCopies) {
+            if (listOfBooks[i].status !== 'unavailable') {
+                Book.findOneAndUpdate(
+                    { _id: listOfBooks[i]._id },
+                    { $set: { status: 'unavailable' } },
+                    { new: true, overwrite: true },
+                    function (err, result) {
+                        if (!err)
+                            listOfBooks[i] = result
+                    })
+            }
+        } else {
+            if (listOfBooks[i].status !== 'available') {
+                Book.findOneAndUpdate(
+                    { _id: listOfBooks[i]._id },
+                    { $set: { status: 'available' } },
+                    { new: true, overwrite: true },
+                    function (err, result) {
+                        if (!err)
+                            listOfBooks[i] = result
+                    })
+            }
+        }
+    }
     try {
         res.status(200).send(listOfBooks)
     } catch (err) {

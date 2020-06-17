@@ -4,6 +4,7 @@
       <div class="searchField">
         <input type="text" v-model="searchValue" class="searchInput" placeholder="Search title..." />
         <nuxt-link to="/books/add" class="addBook">Add Book</nuxt-link>
+        <button @click.prevent="refreshList" class="addBook button">Refresh</button>
       </div>
       <Book :key="book.isbn" v-for="book in getBooks" :book="book" />
     </client-only>
@@ -29,6 +30,18 @@ export default {
       });
     }
   },
+  methods: {
+    async refreshList() {
+      await this.$axios.get("http://127.0.0.1:5000/api/books/").then(res => {
+        if (res.status === 200) {
+          this.$store.commit("books/setInitialBooks", res.data);
+        }
+      });
+    }
+  },
+  beforeMount() {
+    this.refreshList();
+  },
   data() {
     return {
       searchValue: "",
@@ -48,10 +61,10 @@ export default {
 <style lang="scss" scoped>
 .searchField {
   display: grid;
-  grid-template-columns: 85% 15%;
+  grid-template-columns: 70% 15% 15%;
   height: 100%;
   .addBook {
-    background-color: yellowgreen;
+    background-color: #0bcf5d;
     margin-bottom: 10px;
     margin-left: 5px;
     padding: 15px 0;
@@ -60,6 +73,12 @@ export default {
     border-radius: 10px;
     text-align: center;
     align-self: center;
+    outline: none;
+  }
+  .button {
+    border: none;
+    font-size: 18px;
+    background-color: #0b91cf;
   }
 }
 .books-elements {

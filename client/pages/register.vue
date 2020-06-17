@@ -1,13 +1,19 @@
 <template>
-  <div>
-    <form @submit.prevent="onSubmit">
-      <label for="name">Username: </label>
-      <input v-model="name" type="text" name="username"/>
-       <label for="email">Email: </label>
-      <input v-model="email" type="text" />
-       <label for="password">Password: </label>
-      <input v-model="password" type="password" />
-      <button type="submit">Login</button>
+  <div class="authorization">
+    <form class="authForm" @submit.prevent="onSubmit">
+      <div class="inputForm">
+        <label for="name">Username:</label>
+        <input v-model="name" type="text" name="username" />
+      </div>
+      <div class="inputForm">
+        <label for="email">Email:</label>
+        <input v-model="email" type="text" />
+      </div>
+      <div class="inputForm">
+        <label for="password">Password:</label>
+        <input v-model="password" type="password" />
+      </div>
+      <button class="buttonForm" type="submit">Login</button>
     </form>
   </div>
 </template>

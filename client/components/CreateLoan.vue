@@ -8,7 +8,7 @@
       <label for="title">Book Title:</label>
       <input required v-model="title" type="text" name="title" :disabled="true" />
       <label for="issueDate">Issue Date:</label>
-      <input required v-model="issueValue" type="date" name="issueDate" :disabled="true" />
+      <input required v-model="issueDateValue" type="date" name="issueDate" :disabled="true" />
       <label for="dueDate">Due Date:</label>
       <input required v-model="dueDate" type="date" name="dueDate" />
     </div>
@@ -25,7 +25,7 @@ export default {
     return {
       username: "",
       title: "",
-      issueValue: new Date(Date.now()).toISOString().split('T')[0],
+      issueDateValue: new Date(Date.now()).toISOString().split('T')[0],
       issueDate: new Date(Date.now()),
       dueDate: null
     };

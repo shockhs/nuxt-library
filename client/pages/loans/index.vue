@@ -2,7 +2,10 @@
   <section id="loans">
     <header>
       <client-only placeholder="Loading...">
-        <h2>Loans List - {{username}}</h2>
+        <h3>
+          Loans List -
+          <span class="username">@{{username}}</span>
+        </h3>
       </client-only>
       <button @click.prevent="refresh" class="refresh">Refresh</button>
     </header>
@@ -71,15 +74,23 @@ export default {
       });
   },
   mounted() {
+    if (!this.$store.state.authentication.authToken)
+      this.$router.push("/login");
     this.username = this.$store.getters["authentication/getUsername"];
   }
 };
 </script>
 
 <style lang="scss" scoped>
+section {
+  margin-top: 30px;
+}
 h2 {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+.username {
+  color: rgb(4, 141, 233);
 }
 header {
   width: 100%;
