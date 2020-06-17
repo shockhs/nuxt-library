@@ -8,9 +8,10 @@
     </header>
     <div class="table">
       <div class="values">
-        <span>№</span>
+        <span>Title</span>
         <span>Issue Date</span>
         <span>Due Date</span>
+        <span>Return Date</span>
         <span>Status</span>
         <span>Action</span>
       </div>
@@ -18,9 +19,9 @@
         <Loan
           :key="loan._id"
           :loan="loan"
-          :index="index+1"
+          :refresh="refresh"
           :keyPage="true"
-          v-for="(loan,index) in loans"
+          v-for="loan in loans"
         />
       </client-only>
     </div>
@@ -50,6 +51,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.$store.commit("loans/setLoans", res.data);
+            this.loans = res.data;
           }
         });
     }
@@ -64,7 +66,7 @@ export default {
       .then(res => {
         if (res.status === 200) {
           this.$store.commit("loans/setLoans", res.data);
-          this.loans = this.$store.getters["loans/getLoans"];
+          this.loans = res.data;
         }
       });
   },

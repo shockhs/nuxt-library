@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Loan = require('../models/Loan')
+const Book = require('../models/Book')
 const isActiveUser = require('./middleware/isActiveUser')
 
 
@@ -55,11 +56,35 @@ router.post('/close', isActiveUser, async (req, res) => {
     let { loanId, returnDate } = req.body
     returnDate = new Date(returnDate)
     try {
-        const loan = Loan.findOneAndUpdate(
-            { _id: loanId },
-            { $set: { status: 'closed', returnDate: returnDate } },
-            { new: true, overwrite: true })
-        res.status(200).send(loan)
+        Loan.findOneAndUpdate(
+            { _id: loanId, member: req.currentUser._id },
+            { $set: { returnDate: returnDate, status: 'closed' } },
+            { new: true, overwrite: true }, function (error, result) {
+                if (!error) {
+                    res.status(200).send({ message: 'Loan is closed', status: 2000 })
+                    Book.findOneAndUpdate(
+                        { _id: result.book },
+                        { $inc: { stock: -1 } },
+                        { new: true, overwrite: true },
+                        function (err) {
+                            console.log(err);
+                        })
+                }
+            })
+    } catch (err) {
+        res.status(400).send(err);
+    }
+})
+
+
+router.delete('/loanId=?:loanId', isActiveUser, async (req, res) => {
+    let loanId = req.params.loanId
+    const loanExist = await Loan.findOne({ _id: loanId, member: req.currentUser._id })
+    if (!loanExist) return res.status(400).send({ error: `Loan doesn't exist`, resultCode: 10 });
+
+    try {
+        await loanExist.remove();
+        res.status(200).send({ message: `Loan deleted`, status: 200 })
     } catch (err) {
         res.status(400).send(err);
     }
@@ -71,24 +96,37 @@ router.post('/create', isActiveUser, async (req, res) => {
     issueDate = new Date(issueDate)
     dueDate = new Date(dueDate)
     const member = req.currentUser._id
-    if (issueDate > dueDate || issueDate < Date.now() || dueDate < Date.now()) {
+    if (issueDate > dueDate) {
         return res.status(400).send('Bad request')
     }
-    const loan = new Loan({
-        book: book,
-        member: member,
-        issueDate: issueDate,
-        dueDate: dueDate,
-        returnDate: null,
-        status: 'inProgress'
-    });
-
-    try {
-        const savedLoan = await loan.save();
-        res.send(savedLoan)
-    } catch (err) {
-        res.status(400).send(err);
+    const bookExist = await Book.findOne({ _id: book })
+    if (bookExist.stock < bookExist.numberOfCopies) {
+        Book.findOneAndUpdate(
+            { _id: book },
+            { $inc: { stock: 1 } },
+            { new: true, overwrite: true },
+            function (err) {
+                console.log(err);
+            })
+        const loan = new Loan({
+            book: book,
+            title: bookExist.title,
+            member: member,
+            issueDate: issueDate,
+            dueDate: dueDate,
+            returnDate: null,
+            status: 'inProgress'
+        });
+        try {
+            const savedLoan = await loan.save();
+            res.send(savedLoan)
+        } catch (err) {
+            res.status(400).send(err);
+        }
+    } else {
+        res.status(401).send({ message: 'No free copies in base' });
     }
+
 })
 
 

@@ -4,7 +4,7 @@
       <button @click.prevent="closeClick" class="close">Close</button>
     </div>
     <div v-if="status==='closed'">
-      <button class="close delete">Delete</button>
+      <button @click.prevent="deleteClick" class="close delete">Delete</button>
     </div>
   </div>
 </template>
@@ -15,11 +15,25 @@ export default {
   props: {
     status: String,
     keyPage: Boolean,
-    loanId: String
+    loanId: String,
+    refresh: Function
   },
   methods: {
     closeClick() {
       this.$router.push(`/loans/${this.loanId}/close`);
+    },
+    deleteClick() {
+      this.$axios
+        .delete(`http://127.0.0.1:5000/api/loans/loanId=${this.loanId}`, {
+          headers: {
+            authorization: this.$store.state.authentication.authToken
+          }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.refresh();
+          }
+        });
     }
   }
 };

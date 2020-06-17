@@ -15,9 +15,26 @@ router.get('/', async (req, res) => {
 router.get('/id=?:id', async (req, res) => {
     const bookExist = await Book.findOne({ _id: req.params.id })
     if (!bookExist) return res.status(400).send({ error: `Book doesn't exist`, resultCode: 10 });
-
     try {
-        res.send(bookExist)
+        if (bookExist.stock === bookExist.numberOfCopies) {
+            Book.findOneAndUpdate(
+                { _id: req.params.id },
+                { $set: { status: 'unavailable' } },
+                { new: true, overwrite: true },
+                function (err, result) {
+                    if (!err)
+                        res.status(200).send(result)
+                })
+        } else {
+            Book.findOneAndUpdate(
+                { _id: req.params.id },
+                { $set: { status: 'available' } },
+                { new: true, overwrite: true },
+                function (err, result) {
+                    if (!err)
+                        res.status(200).send(result)
+                })
+        }
     } catch (err) {
         res.status(400).send(err);
     }

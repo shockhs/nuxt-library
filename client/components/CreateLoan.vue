@@ -8,7 +8,7 @@
       <label for="title">Book Title:</label>
       <input required v-model="title" type="text" name="title" :disabled="true" />
       <label for="issueDate">Issue Date:</label>
-      <input required v-model="issueDate" type="date" name="issueDate" />
+      <input required v-model="issueValue" type="date" name="issueDate" :disabled="true" />
       <label for="dueDate">Due Date:</label>
       <input required v-model="dueDate" type="date" name="dueDate" />
     </div>
@@ -25,7 +25,8 @@ export default {
     return {
       username: "",
       title: "",
-      issueDate: null,
+      issueValue: new Date(Date.now()).toISOString().split('T')[0],
+      issueDate: new Date(Date.now()),
       dueDate: null
     };
   },
@@ -33,7 +34,7 @@ export default {
     createLoan(event) {
       const loan = {
         book: this.book._id,
-        issueDate: new Date(this.issueDate),
+        issueDate: this.issueDate,
         dueDate: new Date(this.dueDate)
       };
       this.$axios

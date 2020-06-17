@@ -55,7 +55,7 @@ export default {
     margin-bottom: 10px;
     margin-left: 5px;
     padding: 15px 0;
-    color:#fff;
+    color: #fff;
     font-weight: 500;
     border-radius: 10px;
     text-align: center;

@@ -20,8 +20,8 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      this.$axios
+    async onSubmit() {
+      await this.$axios
         .$post("http://127.0.0.1:5000/api/user/login", {
           email: this.email,
           password: this.password
@@ -29,6 +29,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.$store.commit("authentication/setToken", res.token);
+            this.$store.dispatch("authentication/setUserAction", res.token);
             this.$router.push("/");
           } else {
             this.error = res;

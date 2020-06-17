@@ -20,7 +20,8 @@
           </span>
 
           <div class="options center">
-            <span class="status">{{book.status}}</span>
+            <span v-if="book.status==='available'" class="status">{{book.status}}</span>
+            <span v-else class="status red">{{book.status}}</span>
           </div>
         </div>
         <div class="actions">
@@ -132,6 +133,9 @@ export default {
   padding: 5px 30px;
   font-weight: 500;
   text-transform: uppercase;
+}
+.red {
+  background-color: #cf0b1b;
 }
 .options {
   margin-top: 20px;

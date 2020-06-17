@@ -1,8 +1,11 @@
 <template>
   <div>
     <form @submit.prevent="onSubmit">
-      <input v-model="name" type="text" />
+      <label for="name">Username: </label>
+      <input v-model="name" type="text" name="username"/>
+       <label for="email">Email: </label>
       <input v-model="email" type="text" />
+       <label for="password">Password: </label>
       <input v-model="password" type="password" />
       <button type="submit">Login</button>
     </form>

@@ -29,7 +29,9 @@ export default {
           }
         })
         .then(res => {
-          this.$router.push("/loans");
+          if (res.status === 200) {
+            this.$router.push("/loans");
+          }
         });
     }
   }

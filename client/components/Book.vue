@@ -19,13 +19,9 @@
         {{book.author}}
       </span>
       <div class="options">
-        <span class="status">{{book.status}}</span>
+        <span v-if="book.status==='available'" class="status">{{book.status}}</span>
+        <span v-else class="status red">{{book.status}}</span>
       </div>
-    </div>
-    <div class="book-item__actions">
-      <button @click.prevent="viewClick">View</button>
-      <button>Edit</button>
-      <button>Delete</button>
     </div>
   </div>
 </template>
@@ -96,6 +92,9 @@ export default {
         padding: 5px 30px;
         font-weight: 500;
         text-transform: uppercase;
+      }
+      .red {
+        background-color: #cf0b1b;
       }
     }
   }

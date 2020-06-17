@@ -1,10 +1,15 @@
 <template>
   <div class="loan">
-    <div class="column">{{index}}</div>
+    <div class="column">{{loan.title}}</div>
     <div class="column">{{new Date(loan.issueDate).toISOString().slice(0,10)}}</div>
     <div class="column">{{new Date(loan.dueDate).toISOString().slice(0,10)}}</div>
+    <div
+      v-if="loan.returnDate"
+      class="column"
+    >{{new Date(loan.returnDate).toISOString().slice(0,10)}}</div>
+    <div v-else class="column">-</div>
     <StatusSpan :status="loan.status" />
-    <LoanButton :status="loan.status" :keyPage="keyPage" :loanId="loan._id" />
+    <LoanButton :refresh="refresh" :status="loan.status" :keyPage="keyPage" :loanId="loan._id" />
   </div>
 </template>
 
@@ -20,8 +25,8 @@ export default {
   },
   props: {
     loan: {},
-    index: Number,
-    keyPage: Boolean
+    keyPage: Boolean,
+    refresh: Function
   }
 };
 </script>

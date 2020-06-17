@@ -9,12 +9,27 @@ export const getters = {
     user: state => state.user,
     status: state => state.status,
     getToken: state => state.authToken,
-    getUsername: state => state.user.username
+    getUsername: state => state.user.username,
+    getUserGroup: state => state.user.group
 }
 
 
 export const actions = {
-
+    async setUserAction({ commit }, token) {
+        await this.$axios
+            .$get("http://127.0.0.1:5000/api/user/login", {
+                withCredentials: true,
+                headers: {
+                    authorization: token
+                }
+            })
+            .then(res => {
+                console.log(res);
+                if (res.status === 200) {
+                    commit("setUser", res.user);
+                }
+            });
+    }
 }
 
 export const mutations = {
