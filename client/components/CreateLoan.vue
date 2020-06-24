@@ -38,7 +38,7 @@ export default {
         dueDate: new Date(this.dueDate)
       };
       this.$axios
-        .post("http://127.0.0.1:5000/api/loans/create", loan, {
+        .post("https://nuxt-library.herokuapp.com/api/loans/create", loan, {
           headers: {
             authorization: this.$store.getters["authentication/getToken"]
           }

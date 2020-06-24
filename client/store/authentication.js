@@ -17,7 +17,7 @@ export const getters = {
 export const actions = {
     async setUserAction({ commit }, token) {
         await this.$axios
-            .$get("http://127.0.0.1:5000/api/user/login", {
+            .$get("https://nuxt-library.herokuapp.com/api/user/login", {
                 withCredentials: true,
                 headers: {
                     authorization: token

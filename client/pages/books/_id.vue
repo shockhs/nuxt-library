@@ -57,7 +57,7 @@ export default {
   },
   created() {
     this.$axios
-      .get(`http://127.0.0.1:5000/api/books/id=${this.$nuxt.$route.params.id}`)
+      .get(`https://nuxt-library.herokuapp.com/api/books/id=${this.$nuxt.$route.params.id}`)
       .then(res => {
         if (res.status === 200) {
           this.book = res.data;
@@ -65,7 +65,7 @@ export default {
       });
     this.$axios
       .get(
-        `http://127.0.0.1:5000/api/loans/book=${this.$nuxt.$route.params.id}`
+        `https://nuxt-library.herokuapp.com/api/loans/book=${this.$nuxt.$route.params.id}`
       )
       .then(res => {
         this.loans = res.data;

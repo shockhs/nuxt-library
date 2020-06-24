@@ -45,6 +45,7 @@ export default {
   width: 100%;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
 }
 </style>

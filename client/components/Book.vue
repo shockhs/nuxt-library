@@ -47,6 +47,7 @@ export default {
   grid-template-columns: 20% 60% 20%;
   border: 1px solid #0bcf5d;
   border-radius: 5px;
+  margin-bottom: 10px;
   padding: 10px;
   &__image {
     display: flex;

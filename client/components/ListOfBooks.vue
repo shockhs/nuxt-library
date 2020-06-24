@@ -1,12 +1,17 @@
 <template>
   <div class="books-elements">
+    <div class="searchField">
+      <input type="text" v-model="searchValue" class="searchInput" placeholder="Search title..." />
+      <nuxt-link to="/books/add" class="addBook">Add Book</nuxt-link>
+      <button @click.prevent="refreshList" class="addBook button">Refresh</button>
+    </div>
+
     <client-only placeholder="Loading...">
-      <div class="searchField">
-        <input type="text" v-model="searchValue" class="searchInput" placeholder="Search title..." />
-        <nuxt-link to="/books/add" class="addBook">Add Book</nuxt-link>
-        <button @click.prevent="refreshList" class="addBook button">Refresh</button>
-      </div>
-      <Book :key="book.isbn" v-for="book in getBooks" :book="book" />
+      <transition-group tag="ul">
+        <li :key="book.isbn" v-for="book in getBooks">
+          <Book :book="book" />
+        </li>
+      </transition-group>
     </client-only>
   </div>
 </template>
@@ -32,7 +37,7 @@ export default {
   },
   methods: {
     async refreshList() {
-      await this.$axios.get("http://127.0.0.1:5000/api/books/").then(res => {
+      await this.$axios.get("https://nuxt-library.herokuapp.com/api/books/").then(res => {
         if (res.status === 200) {
           this.$store.commit("books/setInitialBooks", res.data);
         }
@@ -40,6 +45,7 @@ export default {
     }
   },
   beforeMount() {
+    console.log(this.$refs.list);
     this.refreshList();
   },
   data() {
@@ -49,7 +55,7 @@ export default {
     };
   },
   async created() {
-    this.$axios.get("http://127.0.0.1:5000/api/books/").then(res => {
+    this.$axios.get("https://nuxt-library.herokuapp.com/api/books/").then(res => {
       if (res.status === 200) {
         this.$store.commit("books/setInitialBooks", res.data);
       }
@@ -59,6 +65,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ul {
+  list-style: none;
+}
 .searchField {
   display: grid;
   grid-template-columns: 70% 15% 15%;

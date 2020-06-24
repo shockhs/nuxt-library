@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 app.use(express.json())
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+app.use(cors())
 // Route Middleware
 app.use('/api/user', authRoute)
 app.use('/api/books', booksRoute)

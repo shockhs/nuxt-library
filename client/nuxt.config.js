@@ -1,5 +1,8 @@
+import axios from 'axios';
+
+
 module.exports = {
-  mode:'universal',
+  mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -18,6 +21,23 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
+  generate: {
+    async routes() {
+      const paths = [];
+
+      await axios.get("https://nuxt-library.herokuapp.com/api/books/")
+        .then((res) => {
+          paths.push(...res.data.map((book) => {
+            return '/books/' + book._id
+          }))
+          paths.push(...res.data.map((book) => {
+            return '/loans/' + book._id + '/create'
+          }))
+        })
+
+      return paths;
+    }
+  },
   loading: { color: '#3B8070' },
   modules: [
     '@nuxtjs/axios'

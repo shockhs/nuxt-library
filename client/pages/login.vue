@@ -28,7 +28,7 @@ export default {
   methods: {
     async onSubmit() {
       await this.$axios
-        .$post("http://127.0.0.1:5000/api/user/login", {
+        .$post("https://nuxt-library.herokuapp.com/api/user/login", {
           email: this.email,
           password: this.password
         })

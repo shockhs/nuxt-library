@@ -32,7 +32,7 @@ export default {
   methods: {
     onSubmit() {
       this.$axios
-        .$post("http://127.0.0.1:5000/api/user/register", {
+        .$post("https://nuxt-library.herokuapp.com/api/user/register", {
           name: this.name,
           email: this.email,
           password: this.password

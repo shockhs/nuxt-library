@@ -40,7 +40,7 @@ export default {
         numberOfCopies: this.numberOfCopies
       };
       this.$axios
-        .post("http://127.0.0.1:5000/api/books/add", book, {
+        .post("https://nuxt-library.herokuapp.com/api/books/add", book, {
           headers: {
             authorization: this.$store.getters["authentication/getToken"]
           }

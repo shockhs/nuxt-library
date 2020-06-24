@@ -48,7 +48,7 @@ export default {
   created() {
     this.$axios
       .get(
-        `http://127.0.0.1:5000/api/books/isbn=${this.$nuxt.$route.params.isbn}`
+        `https://nuxt-library.herokuapp.com/api/books/isbn=${this.$nuxt.$route.params.isbn}`
       )
       .then(res => {
         if (res.status === 200) {

@@ -24,7 +24,7 @@ export default {
     },
     deleteClick() {
       this.$axios
-        .delete(`http://127.0.0.1:5000/api/loans/loanId=${this.loanId}`, {
+        .delete(`https://nuxt-library.herokuapp.com/api/loans/loanId=${this.loanId}`, {
           headers: {
             authorization: this.$store.state.authentication.authToken
           }
